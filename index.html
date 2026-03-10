@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吉伊卡哇終極密碼 - Vercel 版</title>
+    <style>
+        body { font-family: 'Arial', 'Microsoft JhengHei', sans-serif; background-color: #fff0f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        #start-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 240, 245, 0.98); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; }
+        #start-btn { padding: 30px 60px; font-size: 3rem; background-color: #ffb6c1; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 10px 30px rgba(255, 182, 193, 0.8); }
+        .container { background: white; padding: 2.5rem; border-radius: 40px; box-shadow: 0 20px 60px rgba(255, 182, 193, 0.6); display: flex; flex-direction: row; align-items: center; border: 8px solid #ffb6c1; max-width: 90%; gap: 40px; }
+        .pic-area { width: 420px; height: 420px; background: #fffafb; border-radius: 35px; display: flex; justify-content: center; align-items: center; border: 3px dashed #ffe4e1; }
+        #char-img { max-width: 92%; max-height: 92%; object-fit: contain; }
+        .info-area { text-align: center; min-width: 420px; }
+        .range-text { font-size: 7rem; font-weight: 900; color: #ff69b4; margin-bottom: 20px; }
+        input { width: 140px; font-size: 2.5rem; padding: 12px; border: 5px solid #ffb6c1; border-radius: 18px; text-align: center; outline: none; }
+        #go-btn { font-size: 2rem; padding: 15px 40px; background: #ffb6c1; color: white; border: none; border-radius: 18px; cursor: pointer; font-weight: bold; }
+        #msg { font-size: 2rem; color: #888; margin-top: 20px; font-weight: bold; }
+        .hidden { display: none; }
+        .shake { animation: shakeEffect 0.15s infinite; }
+        @keyframes shakeEffect { 0% { transform: translate(3px, 3px); } 50% { transform: translate(-3px, -3px); } 100% { transform: translate(3px, 3px); } }
+    </style>
+</head>
+<body>
+
+<div id="start-overlay">
+    <img src="https://i.giphy.com/media/kKtAJrJUQnuikFZr3c/giphy.gif" style="width:200px; margin-bottom:20px;">
+    <button id="start-btn" onclick="startGame()">點擊開始遊戲</button>
+</div>
+
+<audio id="bgm" loop preload="auto"><source src="bgm.mp3" type="audio/mpeg"></audio>
+<audio id="sound-win" preload="auto"><source src="win.mp3" type="audio/mpeg"></audio>
+
+<div class="container">
+    <div class="pic-area" id="box"><img id="char-img" src="https://i.giphy.com/media/kKtAJrJUQnuikFZr3c/giphy.gif"></div>
+    <div class="info-area">
+        <div class="range-text"><span id="low">1</span> ~ <span id="high">328</span></div>
+        <input type="number" id="num-in" placeholder="??" inputmode="numeric">
+        <button id="go-btn" onclick="check()">猜！</button>
+        <p id="msg">答案是 100，請輸入數字</p>
+        <button id="re-btn" class="hidden" onclick="location.reload()">重新開始</button>
+    </div>
+</div>
+
+<script>
+    var ans = 100, L = 1, R = 328;
+    var bgm = document.getElementById('bgm');
+    var win = document.getElementById('sound-win');
+
+    function startGame() {
+        document.getElementById('start-overlay').style.display = 'none';
+        bgm.play();
+        document.getElementById('num-in').focus();
+    }
+
+    function check() {
+        var val = parseInt(document.getElementById('num-in').value);
+        if (isNaN(val) || val <= L || val >= R) {
+            document.getElementById('msg').innerText = "超出範圍了！";
+            return;
+        }
+
+        document.getElementById('go-btn').disabled = true;
+        document.getElementById('box').className = "pic-area shake";
+
+        setTimeout(function() {
+            document.getElementById('box').className = "pic-area";
+            if (val === ans) {
+                document.getElementById('char-img').src = "https://i.giphy.com/media/6aZn7gU0JxqiVd3tca/giphy.gif";
+                document.getElementById('msg').innerHTML = "<span style='color:#ff69b4'>答對了！就是 100</span>";
+                document.getElementById('re-btn').classList.remove('hidden');
+                bgm.pause();
+                win.play();
+            } else {
+                if (val < ans) L = val; else R = val;
+                document.getElementById('low').innerText = L;
+                document.getElementById('high').innerText = R;
+                document.getElementById('msg').innerText = val < ans ? "太小了！" : "太大了！";
+                var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S"];
+                document.getElementById('char-img').src = "https://i.giphy.com/media/" + gifs[Math.floor(Math.random()*gifs.length)] + "/giphy.gif";
+                document.getElementById('go-btn').disabled = false;
+                document.getElementById('num-in').value = "";
+                document.getElementById('num-in').focus();
+            }
+        }, 800);
+    }
+    document.getElementById('num-in').onkeyup = function(e) { if (e.keyCode === 13) check(); };
+</script>
+</body>
+</html>
