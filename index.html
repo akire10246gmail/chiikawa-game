@@ -5,91 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>花椰菜燉燉雞爭奪戰</title>
     <style>
-        body { font-family: sans-serif; background-color: #fff0f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { font-family: sans-serif; background-color: #fff0f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
         
-        #start-overlay { position: fixed; inset: 0; background: #fff0f5; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
-        #start-btn { padding: 30px 60px; font-size: 3rem; background: #ffb6c1; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        /* 開始蓋板 - 恢復原本的圖片與樣式 */
+        #start-overlay { position: fixed; inset: 0; background: #fff0f5; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; text-align: center; }
+        #start-title { font-size: 5rem; font-weight: 900; color: #ff69b4; margin-bottom: 20px; text-shadow: 4px 4px 0px white; }
+        #start-img { width: 450px; height: 450px; border-radius: 40px; object-fit: cover; border: 12px solid white; box-shadow: 0 15px 40px rgba(255, 182, 193, 0.8); margin-bottom: 30px; }
+        #start-btn { padding: 25px 70px; font-size: 3.5rem; background-color: #ffb6c1; color: white; border: none; border-radius: 60px; cursor: pointer; font-weight: bold; box-shadow: 0 10px 25px rgba(255, 182, 193, 0.8); }
 
-        .container { background: white; padding: 2rem; border-radius: 40px; border: 8px solid #ffb6c1; width: 90%; max-width: 1000px; display: flex; align-items: center; gap: 30px; position: relative; }
+        /* 主容器 */
+        .container { background: white; padding: 2rem; border-radius: 40px; border: 8px solid #ffb6c1; width: 90%; max-width: 1000px; display: flex; align-items: center; gap: 30px; position: relative; min-height: 500px; }
 
-        .pic-area { flex: 1; height: 400px; display: flex; justify-content: center; align-items: center; }
+        .pic-area { flex: 1; height: 400px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
         #char-img { max-width: 100%; max-height: 100%; border-radius: 20px; }
 
         .info-area { flex: 1; text-align: center; }
-        .avatar-box { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #ffb6c1; overflow: hidden; margin: 0 auto 10px; background: white; }
+        .avatar-box { width: 100px; height: 100px; border-radius: 50%; border: 4px solid #ffb6c1; overflow: hidden; margin: 0 auto 10px; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
-        #msg { font-size: 2rem; color: #ff69b4; font-weight: bold; margin: 5px 0; }
-        .range-text { font-size: 6rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
-        input { width: 150px; font-size: 3rem; text-align: center; border: 4px solid #ffb6c1; border-radius: 15px; outline: none; }
-        #go-btn { font-size: 2rem; padding: 10px 30px; background: #ffb6c1; color: white; border: none; border-radius: 15px; cursor: pointer; }
+        #msg { font-size: 2.5rem; color: #ff69b4; font-weight: bold; margin: 5px 0; }
+        .range-text { font-size: 7rem; font-weight: 900; color: #ff69b4; margin: 15px 0; line-height: 1; }
+        input { width: 160px; font-size: 3.5rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; }
+        #go-btn { font-size: 2.2rem; padding: 12px 40px; background: #ffb6c1; color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; margin-left: 10px; }
 
+        /* 勝利層 */
         #win-layer { 
             display: none; position: absolute; inset: 0; background: white; 
             flex-direction: column; align-items: center; justify-content: center; 
             border-radius: 32px; z-index: 5000; 
         }
-        /* 跑馬燈速度調慢 */
-        marquee { width: 100%; font-size: 3.5rem; color: #ff1493; font-weight: bold; background: #fff0f5; padding: 10px 0; position: absolute; top: 0; }
-        #win-img { max-width: 80%; max-height: 70%; margin-top: 60px; border-radius: 20px; }
-        .re-btn { margin-top: 20px; padding: 10px 40px; font-size: 1.5rem; background: #ff8da1; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        marquee { width: 100%; font-size: 3.5rem; color: #ff1493; font-weight: bold; background: #fff0f5; padding: 15px 0; position: absolute; top: 0; }
+        #win-img { max-width: 85%; max-height: 75%; margin-top: 70px; border-radius: 20px; }
+        .re-btn { margin-top: 20px; padding: 15px 50px; font-size: 2rem; background: #ff8da1; color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
 
         .shake { animation: shake 0.1s infinite; }
-        @keyframes shake { 0% { transform: translate(2px, 2px); } 50% { transform: translate(-2px, -2px); } 100% { transform: translate(2px, 2px); } }
+        @keyframes shake { 0% { transform: translate(3px, 3px); } 50% { transform: translate(-3px, -3px); } 100% { transform: translate(3px, 3px); } }
     </style>
 </head>
 <body>
 
 <div id="start-overlay">
-    <h1 style="font-size: 4rem; color: #ff69b4;">花椰菜燉燉雞爭奪戰</h1>
-    <button id="start-btn" onclick="startGame()">開始遊戲</button>
-</div>
-
-<div class="container">
-    <div class="pic-area" id="pic-box">
-        <img id="char-img" src="https://i.giphy.com/media/kKtAJrJUQnuikFZr3c/giphy.gif">
-    </div>
-    
-    <div class="info-area">
-        <div class="avatar-box"><img id="avatar-img" src="face1.png"></div>
-        <p id="msg">準備好了嗎？</p>
-        <div class="range-text"><span id="low">1</span>~<span id="high">328</span></div>
-        <input type="number" id="num-in" placeholder="??">
-        <button id="go-btn" onclick="check()">猜！</button>
-    </div>
-
-    <div id="win-layer">
-        <marquee scrollamount="8">答對了！就是 100! 恭喜獲得花椰菜燉燉雞🎉🎉 答對了！就是 100! 恭喜獲得花椰菜燉燉雞🎉🎉</marquee>
-        <img id="win-img" src="win_image.png">
-        <button class="re-btn" onclick="location.reload()">再玩一次</button>
-    </div>
-</div>
-
-<audio id="bgm" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
-<audio id="sound-win"><source src="win.mp3" type="audio/mpeg"></audio>
-
-<script>
-    var ans = 100, L = 1, R = 328;
-    var lastGifIdx = -1, lastFaceIdx = 0;
-    
-    var bgm = document.getElementById('bgm'), winSound = document.getElementById('sound-win');
-    var numIn = document.getElementById('num-in'), msg = document.getElementById('msg'), avatarImg = document.getElementById('avatar-img');
-
-    var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S"];
-    var faces = ["face1.png", "face2.png", "face3.png", "face4.png", "face5.png", "face6.png", "face7.png", "face8.png", "face9.png"];
-
-    function startGame() {
-        document.getElementById('start-overlay').style.display = 'none';
-        bgm.play().catch(e => {});
-        numIn.focus();
-    }
-
-    function check() {
-        var val = parseInt(numIn.value);
-        if (isNaN(val) || val <= L || val >= R) return;
-
-        document.getElementById('pic-box').className = "pic-area shake";
-
-        // 隨機不重複 Face
-        var nextFaceIdx;
-        do { nextFaceIdx = Math.floor(Math.random() * faces.length); } while (nextFaceIdx === lastFaceIdx);
-        lastFaceIdx
+    <div id="start-title">花椰菜燉燉雞爭奪戰</div>
+    <img id="start-img" src="poster.png" onerror="this.src='https://i.imgur.com/8QO9M9F.png'">
+    <button id="start-btn" onclick="startGame()">開始遊戲!</
