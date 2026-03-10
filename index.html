@@ -7,8 +7,10 @@
     <style>
         body { font-family: sans-serif; background-color: #fff0f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
-        /* 啟動蓋板 */
-        #start-overlay { position: fixed; inset: 0; background: #fff0f5; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        /* 啟動蓋板 - 恢復封面圖 */
+        #start-overlay { position: fixed; inset: 0; background: #fff0f5; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; text-align: center; }
+        #start-title { font-size: 4rem; font-weight: 900; color: #ff69b4; margin-bottom: 20px; }
+        #start-img { width: 350px; height: 350px; border-radius: 30px; object-fit: cover; border: 10px solid white; box-shadow: 0 10px 30px rgba(255,182,193,0.6); margin-bottom: 25px; }
         #start-btn { padding: 30px 60px; font-size: 3rem; background: #ffb6c1; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
 
         /* 主容器 */
@@ -41,71 +43,4 @@
 <body>
 
 <div id="start-overlay">
-    <h1 style="font-size: 4rem; color: #ff69b4;">花椰菜燉燉雞爭奪戰</h1>
-    <button id="start-btn" onclick="startGame()">開始遊戲</button>
-</div>
-
-<div class="container">
-    <div class="pic-area" id="pic-box">
-        <img id="char-img" src="https://i.giphy.com/media/kKtAJrJUQnuikFZr3c/giphy.gif">
-    </div>
-    
-    <div class="info-area">
-        <p id="msg">數字範圍：</p>
-        <div class="range-text"><span id="low">1</span>~<span id="high">328</span></div>
-        <input type="number" id="num-in" placeholder="??">
-        <button id="go-btn" onclick="check()">猜！</button>
-    </div>
-
-    <div id="win-layer">
-        <marquee scrollamount="8">答對了！就是 100! 恭喜獲得花椰菜燉燉雞🎉🎉 答對了！就是 100! 恭喜獲得花椰菜燉燉雞🎉🎉</marquee>
-        <img id="win-img" src="win_image.png">
-        <button class="re-btn" onclick="location.reload()">再玩一次</button>
-    </div>
-</div>
-
-<audio id="bgm" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
-<audio id="sound-win"><source src="win.mp3" type="audio/mpeg"></audio>
-
-<script>
-    var ans = 100, L = 1, R = 328;
-    var bgm = document.getElementById('bgm'), winSound = document.getElementById('sound-win');
-    var numIn = document.getElementById('num-in'), msg = document.getElementById('msg');
-
-    function startGame() {
-        document.getElementById('start-overlay').style.display = 'none';
-        bgm.play().catch(e => {});
-        numIn.focus();
-    }
-
-    function check() {
-        var val = parseInt(numIn.value);
-        if (isNaN(val) || val <= L || val >= R) return;
-
-        document.getElementById('pic-box').className = "pic-area shake";
-
-        setTimeout(function() {
-            document.getElementById('pic-box').className = "pic-area";
-            if (val === ans) {
-                bgm.pause();
-                document.getElementById('win-layer').style.display = 'flex';
-                winSound.play().catch(e => {});
-            } else {
-                if (val < ans) L = val; else R = val;
-                document.getElementById('low').innerText = L;
-                document.getElementById('high').innerText = R;
-                msg.innerText = val < ans ? "太小了！" : "太大了！";
-                
-                var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S"];
-                document.getElementById('char-img').src = "https://i.giphy.com/media/" + gifs[Math.floor(Math.random()*gifs.length)] + "/giphy.gif";
-                
-                numIn.value = "";
-                numIn.focus();
-            }
-        }, 500);
-    }
-    numIn.onkeyup = function(e) { if (e.keyCode === 13) check(); };
-</script>
-
-</body>
-</html>
+    <div id="start-title">花椰菜燉燉
