@@ -7,7 +7,7 @@
     <style>
         body { font-family: sans-serif; background-color: #fff0f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
         
-        /* 開始蓋板 - 恢復原本的圖片與樣式 */
+        /* 開始蓋板 */
         #start-overlay { position: fixed; inset: 0; background: #fff0f5; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; text-align: center; }
         #start-title { font-size: 5rem; font-weight: 900; color: #ff69b4; margin-bottom: 20px; text-shadow: 4px 4px 0px white; }
         #start-img { width: 450px; height: 450px; border-radius: 40px; object-fit: cover; border: 12px solid white; box-shadow: 0 15px 40px rgba(255, 182, 193, 0.8); margin-bottom: 30px; }
@@ -46,4 +46,33 @@
 <div id="start-overlay">
     <div id="start-title">花椰菜燉燉雞爭奪戰</div>
     <img id="start-img" src="poster.png" onerror="this.src='https://i.imgur.com/8QO9M9F.png'">
-    <button id="start-btn" onclick="startGame()">開始遊戲!</
+    <button id="start-btn" onclick="startGame()">開始遊戲!</button>
+</div>
+
+<div class="container">
+    <div class="pic-area" id="pic-box">
+        <img id="char-img" src="https://i.giphy.com/media/kKtAJrJUQnuikFZr3c/giphy.gif">
+    </div>
+    
+    <div class="info-area">
+        <div class="avatar-box"><img id="avatar-img" src="face1.png"></div>
+        <p id="msg">準備好了嗎？</p>
+        <div class="range-text"><span id="low">1</span>~<span id="high">328</span></div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <input type="number" id="num-in" placeholder="??" inputmode="numeric">
+            <button id="go-btn" onclick="check()">猜！</button>
+        </div>
+    </div>
+
+    <div id="win-layer">
+        <marquee scrollamount="8">答對了！就是 100! 恭喜獲得花椰菜燉燉雞🎉🎉 &nbsp;&nbsp;&nbsp;&nbsp; 答對了！就是 100! 恭喜獲得花椰菜燉燉雞🎉🎉</marquee>
+        <img id="win-img" src="win_image.png">
+        <button class="re-btn" onclick="location.reload()">再玩一次</button>
+    </div>
+</div>
+
+<audio id="bgm" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
+<audio id="sound-win"><source src="win.mp3" type="audio/mpeg"></audio>
+
+<script>
+    var ans = 100, L = 1, R =
