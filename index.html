@@ -1,70 +1,134 @@
+如何調整勝利畫面的配置?
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>花椰菜燉燉雞爭奪戰</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
-    <style>
-        /* 套用粉圓字型系列 */
-        body { 
-            font-family: 'jf-openhuninn', '粉圓', 'jf open huninn', "Microsoft JhengHei", "微軟正黑體", sans-serif; 
-            background-color: #fff0f5; 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            overflow: hidden; 
-        }
-        
-        #start-overlay { 
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: #fff0f5; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; z-index: 9999; 
-        }
-        #start-title { font-size: 5rem; font-weight: 900; color: #ff69b4; margin-bottom: 20px; text-shadow: 3px 3px 0px white; }
-        
-        .poster-box {
-            width: 400px; height: 400px; border-radius: 50px; 
-            border: 12px solid white; overflow: hidden;
-            box-shadow: 0 15px 35px rgba(255,182,193,0.6); margin-bottom: 30px;
-            background: #ffe4e1;
-        }
-        #start-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        
-        #start-btn { padding: 25px 80px; font-size: 3.5rem; background: #ffb6c1; color: white; border: none; border-radius: 60px; cursor: pointer; font-weight: bold; font-family: inherit; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>花椰菜燉燉雞爭奪戰</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* 已更正：套用粉圓字型系列 */
+        body { 
+            font-family: 'jf-openhuninn', '粉圓', 'jf open huninn', "Microsoft JhengHei", "微軟正黑體", sans-serif; 
+            background-color: #fff0f5; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden; 
+        }
+        
+        #start-overlay { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: #fff0f5; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; z-index: 9999; 
+        }
+        #start-title { font-size: 5rem; font-weight: 900; color: #ff69b4; margin-bottom: 20px; text-shadow: 3px 3px 0px white; }
+        
+        .poster-box {
+            width: 400px; height: 400px; border-radius: 50px; 
+            border: 12px solid white; overflow: hidden;
+            box-shadow: 0 15px 35px rgba(255,182,193,0.6); margin-bottom: 30px;
+            background: #ffe4e1;
+        }
+        #start-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        #start-btn { padding: 25px 80px; font-size: 3.5rem; background: #ffb6c1; color: white; border: none; border-radius: 60px; cursor: pointer; font-weight: bold; font-family: inherit; }
 
-        .container { background: white; padding: 2.5rem; border-radius: 50px; border: 10px solid #ffb6c1; width: 90%; max-width: 1000px; display: flex; align-items: center; gap: 40px; position: relative; }
-        .pic-area { flex: 1; height: 400px; display: flex; justify-content: center; align-items: center; }
-        #char-img { max-width: 100%; max-height: 100%; border-radius: 30px; }
-        .info-area { flex: 1; text-align: center; }
-        #msg { font-size: 2.5rem; color: #ff69b4; font-weight: bold; }
-        .range-text { font-size: 7rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
-        input { width: 160px; font-size: 3.5rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; font-family: inherit; }
-        #go-btn { font-size: 2.2rem; padding: 12px 35px; background: #ffb6c1; color: white; border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
+        .container { background: white; padding: 2.5rem; border-radius: 50px; border: 10px solid #ffb6c1; width: 90%; max-width: 1000px; display: flex; align-items: center; gap: 40px; position: relative; }
+        .pic-area { flex: 1; height: 400px; display: flex; justify-content: center; align-items: center; }
+        #char-img { max-width: 100%; max-height: 100%; border-radius: 30px; }
+        .info-area { flex: 1; text-align: center; }
+        #msg { font-size: 2.5rem; color: #ff69b4; font-weight: bold; }
+        .range-text { font-size: 7rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
+        input { width: 160px; font-size: 3.5rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; font-family: inherit; }
+        #go-btn { font-size: 2.2rem; padding: 12px 35px; background: #ffb6c1; color: white; border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
 
-        /* --- 勝利畫面調整區：徹底解決重疊 --- */
-        #win-layer { 
-            display: none; 
-            position: absolute; 
-            inset: 0; 
-            background: white; 
-            border-radius: 40px; 
-            z-index: 5000; 
-            flex-direction: column;
-            align-items: center;
-        }
+        #win-layer { display: none; position: absolute; inset: 0; background: white; flex-direction: column; align-items: center; justify-content: center; border-radius: 40px; z-index: 5000; }
+        marquee { width: 100%; font-size: 4rem; color: #ff1493; font-weight: bold; background: #fff0f5; padding: 20px 0; position: absolute; top: 0; }
+        #win-img { max-width: 85%; max-height: 75%; margin-top: 80px; border-radius: 30px; }
+        .re-btn { margin-top: 25px; padding: 15px 50px; font-size: 2rem; background: #ff8da1; color: white; border: none; border-radius: 15px; cursor: pointer; font-family: inherit; }
 
-        marquee { 
-            width: 100%; 
-            font-size: 3.5rem; 
-            color: #ff1493; 
-            font-weight: bold; 
-            background: #fff0f5; 
-            padding: 20px 0; 
-            flex: 0 0 auto; /* 強制不縮放，佔據固定空間 */
-            border-top-left-radius: 40px;
-            border-top-right-radius: 40px;
-            position: relative;
-            top:
+        .shake { animation: shake 0.12s infinite; }
+        @keyframes shake { 0% { transform: translate(3px, 3px); } 50% { transform: translate(-3px, -3px); } 100% { transform: translate(3px, 3px); } }
+    </style>
+</head>
+<body>
+
+<div id="start-overlay">
+    <div id="start-title">花椰菜燉燉雞爭奪戰</div>
+    <div class="poster-box">
+        <img id="start-img" src="poster.png">
+    </div>
+    <button id="start-btn" onclick="startGame()">開始遊戲</button>
+</div>
+
+<div class="container">
+    <div class="pic-area" id="pic-box">
+        <img id="char-img" src="https://i.giphy.com/media/kKtAJrJUQnuikFZr3c/giphy.gif">
+    </div>
+    <div class="info-area">
+        <p id="msg">數字範圍：</p>
+        <div class="range-text"><span id="low">1</span>~<span id="high">328</span></div>
+        <input type="number" id="num-in" placeholder="??" inputmode="numeric">
+        <button id="go-btn" onclick="check()">猜！</button>
+    </div>
+    <div id="win-layer">
+        <marquee scrollamount="8">答對了！就是 100! 恭喜獲得花椰菜燉燉雞🎉🎉</marquee>
+        <img id="win-img" src="win_image.png">
+        <button class="re-btn" onclick="location.reload()">再玩一次</button>
+    </div>
+</div>
+
+<audio id="bgm" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
+<audio id="sound-win"><source src="win.mp3" type="audio/mpeg"></audio>
+
+<script>
+    var ans = 100, L = 1, R = 328;
+    var bgm = document.getElementById('bgm'), winSound = document.getElementById('sound-win');
+    var numIn = document.getElementById('num-in'), startImg = document.getElementById('start-img');
+
+    window.onload = function() {
+        var timestamp = new Date().getTime();
+        startImg.src = "poster.png?v=" + timestamp;
+        
+        setTimeout(function(){
+            if(startImg.naturalWidth === 0) {
+                startImg.src = 'https://i.imgur.com/8QO9M9F.png';
+            }
+        }, 200);
+    };
+
+    function startGame() {
+        document.getElementById('start-overlay').style.display = 'none';
+        bgm.play().catch(e => {});
+        numIn.focus();
+    }
+
+    function check() {
+        var val = parseInt(numIn.value);
+        if (isNaN(val) || val <= L || val >= R) return;
+        document.getElementById('pic-box').className = "pic-area shake";
+        setTimeout(function() {
+            document.getElementById('pic-box').className = "pic-area";
+            if (val === ans) {
+                bgm.pause();
+                document.getElementById('win-layer').style.display = 'flex';
+                winSound.play().catch(e => {});
+            } else {
+                if (val < ans) L = val; else R = val;
+                document.getElementById('low').innerText = L;
+                document.getElementById('high').innerText = R;
+                document.getElementById('msg').innerText = val < ans ? "太小了！" : "太大了！";
+                var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S"];
+                document.getElementById('char-img').src = "https://i.giphy.com/media/" + gifs[Math.floor(Math.random()*gifs.length)] + "/giphy.gif";
+                numIn.value = "";
+                numIn.focus();
+            }
+        }, 500);
+    }
+    numIn.onkeyup = function(e) { if (e.keyCode === 13) check(); };
+</script>
+</body>
+</html>
