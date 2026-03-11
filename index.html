@@ -12,28 +12,23 @@
             justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; 
         }
         
-        /* 兩側垂直跑馬燈通用樣式 */
+        /* 兩側垂直跑馬燈 */
         .side-marquee {
-            display: none; /* 獲勝前隱藏 */
+            display: none; 
             position: fixed;
             bottom: 0;
-            width: 80px; /* 寬度足以容納文字 */
+            width: 80px; 
             height: 100vh;
             background: rgba(255, 240, 245, 0.7);
             z-index: 10000;
-            writing-mode: vertical-rl; /* 讓文字垂直排列 */
+            writing-mode: vertical-rl; 
             text-orientation: mixed;
         }
-        
         #marquee-left { left: 0; border-right: 5px solid #ffb6c1; }
         #marquee-right { right: 0; border-left: 5px solid #ffb6c1; }
-
         .side-marquee marquee {
-            height: 100%;
-            width: 100%;
-            font-size: 2.5rem;
-            color: #ff1493;
-            font-weight: bold;
+            height: 100%; width: 100%;
+            font-size: 2.5rem; color: #ff1493; font-weight: bold;
         }
 
         #start-overlay { 
@@ -50,30 +45,31 @@
             background: #ffe4e1;
         }
         #start-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        
         #start-btn { padding: 25px 80px; font-size: 3.5rem; background: #ffb6c1; color: white; border: none; border-radius: 60px; cursor: pointer; font-weight: bold; font-family: inherit; }
 
         .container { background: white; padding: 2.5rem; border-radius: 50px; border: 10px solid #ffb6c1; width: 85%; max-width: 900px; display: flex; align-items: center; gap: 40px; position: relative; }
         .pic-area { flex: 1; height: 400px; display: flex; justify-content: center; align-items: center; }
         #char-img { max-width: 100%; max-height: 100%; border-radius: 30px; }
+        
         .info-area { flex: 1; text-align: center; }
-        #msg { font-size: 2.5rem; color: #ff69b4; font-weight: bold; }
+        
+        /* 文字與小臉對話框區域 */
+        .msg-box { 
+            display: flex; align-items: center; justify-content: center; 
+            gap: 15px; min-height: 80px; 
+        }
+        #msg { font-size: 2.5rem; color: #ff69b4; font-weight: bold; margin: 0; }
+        #face-icon { width: 70px; height: 70px; object-fit: contain; display: none; } /* 初始隱藏 */
+
         .range-text { font-size: 7rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
         input { width: 160px; font-size: 3.5rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; font-family: inherit; }
         #go-btn { font-size: 2.2rem; padding: 12px 35px; background: #ffb6c1; color: white; border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
 
         #win-layer { 
-            display: none; 
-            position: absolute; 
-            inset: 0; 
-            background: white; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            border-radius: 40px; 
-            z-index: 5000; 
+            display: none; position: absolute; inset: 0; background: white; 
+            flex-direction: column; align-items: center; justify-content: center; 
+            border-radius: 40px; z-index: 5000; 
         }
-        
         #win-img { max-width: 85%; max-height: 75%; border-radius: 30px; object-fit: contain; }
         .re-btn { margin-top: 25px; padding: 15px 50px; font-size: 2rem; background: #ff8da1; color: white; border: none; border-radius: 15px; cursor: pointer; font-family: inherit; }
 
@@ -104,7 +100,10 @@
         <img id="char-img" src="https://i.giphy.com/media/kKtAJrJUQnuikFZr3c/giphy.gif">
     </div>
     <div class="info-area">
-        <p id="msg">數字範圍：</p>
+        <div class="msg-box">
+            <p id="msg">數字範圍：</p>
+            <img id="face-icon" src="">
+        </div>
         <div class="range-text"><span id="low">1</span>~<span id="high">328</span></div>
         <input type="number" id="num-in" placeholder="??" inputmode="numeric">
         <button id="go-btn" onclick="check()">猜！</button>
@@ -142,14 +141,14 @@
     function check() {
         var val = parseInt(numIn.value);
         if (isNaN(val) || val <= L || val >= R) return;
+        
         document.getElementById('pic-box').className = "pic-area shake";
+        
         setTimeout(function() {
             document.getElementById('pic-box').className = "pic-area";
             if (val === ans) {
                 bgm.pause();
-                // 顯示勝利層
                 document.getElementById('win-layer').style.display = 'flex';
-                // 顯示兩側垂直跑馬燈
                 document.getElementById('marquee-left').style.display = 'block';
                 document.getElementById('marquee-right').style.display = 'block';
                 winSound.play().catch(e => {});
@@ -158,8 +157,17 @@
                 document.getElementById('low').innerText = L;
                 document.getElementById('high').innerText = R;
                 document.getElementById('msg').innerText = val < ans ? "太小了！" : "太大了！";
+                
+                // --- 隨機放上 face1-9 ---
+                var faceNum = Math.floor(Math.random() * 9) + 1; // 1 到 9
+                var faceIcon = document.getElementById('face-icon');
+                faceIcon.src = "face" + faceNum + ".png";
+                faceIcon.style.display = "block";
+                
+                // 隨機切換 GIF
                 var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S"];
                 document.getElementById('char-img').src = "https://i.giphy.com/media/" + gifs[Math.floor(Math.random()*gifs.length)] + "/giphy.gif";
+                
                 numIn.value = "";
                 numIn.focus();
             }
