@@ -12,22 +12,30 @@
             justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; 
         }
         
-        /* 跑馬燈：獨立於容器外，固定在螢幕頂部 */
-        marquee { 
+        /* 兩側垂直跑馬燈通用樣式 */
+        .side-marquee {
             display: none; /* 獲勝前隱藏 */
-            position: fixed; 
-            top: 0; 
-            left: 0;
-            width: 100%; 
-            font-size: 3.5rem; 
-            color: #ff1493; 
-            font-weight: bold; 
-            background: rgba(255, 240, 245, 0.9); /* 稍微透明增加層次感 */
-            padding: 15px 0; 
-            z-index: 10000; 
-            box-shadow: 0 5px 15px rgba(255,182,193,0.3);
+            position: fixed;
+            bottom: 0;
+            width: 80px; /* 寬度足以容納文字 */
+            height: 100vh;
+            background: rgba(255, 240, 245, 0.7);
+            z-index: 10000;
+            writing-mode: vertical-rl; /* 讓文字垂直排列 */
+            text-orientation: mixed;
         }
         
+        #marquee-left { left: 0; border-right: 5px solid #ffb6c1; }
+        #marquee-right { right: 0; border-left: 5px solid #ffb6c1; }
+
+        .side-marquee marquee {
+            height: 100%;
+            width: 100%;
+            font-size: 2.5rem;
+            color: #ff1493;
+            font-weight: bold;
+        }
+
         #start-overlay { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: #fff0f5; display: flex; flex-direction: column; 
@@ -35,30 +43,4 @@
         }
         #start-title { font-size: 5rem; font-weight: 900; color: #ff69b4; margin-bottom: 20px; text-shadow: 3px 3px 0px white; }
         
-        .poster-box {
-            width: 400px; height: 400px; border-radius: 50px; 
-            border: 12px solid white; overflow: hidden;
-            box-shadow: 0 15px 35px rgba(255,182,193,0.6); margin-bottom: 30px;
-            background: #ffe4e1;
-        }
-        #start-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        
-        #start-btn { padding: 25px 80px; font-size: 3.5rem; background: #ffb6c1; color: white; border: none; border-radius: 60px; cursor: pointer; font-weight: bold; font-family: inherit; }
-
-        .container { background: white; padding: 2.5rem; border-radius: 50px; border: 10px solid #ffb6c1; width: 90%; max-width: 1000px; display: flex; align-items: center; gap: 40px; position: relative; }
-        .pic-area { flex: 1; height: 400px; display: flex; justify-content: center; align-items: center; }
-        #char-img { max-width: 100%; max-height: 100%; border-radius: 30px; }
-        .info-area { flex: 1; text-align: center; }
-        #msg { font-size: 2.5rem; color: #ff69b4; font-weight: bold; }
-        .range-text { font-size: 7rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
-        input { width: 160px; font-size: 3.5rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; font-family: inherit; }
-        #go-btn { font-size: 2.2rem; padding: 12px 35px; background: #ffb6c1; color: white; border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
-
-        /* 獲勝圖層：現在只放圖片和按鈕 */
-        #win-layer { 
-            display: none; 
-            position: absolute; 
-            inset: 0; 
-            background: white; 
-            flex-direction: column; 
-            align-
+        .poster-box
