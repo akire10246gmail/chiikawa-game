@@ -4,18 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>花椰菜燉燉雞爭奪戰</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        /* 已更正：套用粉圓字型系列 */
         body { 
-            font-family: 'jf-openhuninn', '粉圓', 'jf open huninn', "Microsoft JhengHei", "微軟正黑體", sans-serif; 
-            background-color: #fff0f5; 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            overflow: hidden; 
+            font-family: 'Kosugi Maru', "Microsoft JhengHei", "微軟正黑體", sans-serif; 
+            background-color: #fff0f5; margin: 0; display: flex; 
+            justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; 
         }
         
         #start-overlay { 
@@ -35,7 +29,8 @@
         
         #start-btn { padding: 25px 80px; font-size: 3.5rem; background: #ffb6c1; color: white; border: none; border-radius: 60px; cursor: pointer; font-weight: bold; font-family: inherit; }
 
-        .container { background: white; padding: 2.5rem; border-radius: 50px; border: 10px solid #ffb6c1; width: 90%; max-width: 1000px; display: flex; align-items: center; gap: 40px; position: relative; }
+        /* 主遊戲區域 */
+        .container { background: white; padding: 2.5rem; border-radius: 50px; border: 10px solid #ffb6c1; width: 90%; max-width: 1000px; display: flex; align-items: center; gap: 40px; position: relative; height: 600px; }
         .pic-area { flex: 1; height: 400px; display: flex; justify-content: center; align-items: center; }
         #char-img { max-width: 100%; max-height: 100%; border-radius: 30px; }
         .info-area { flex: 1; text-align: center; }
@@ -44,5 +39,8 @@
         input { width: 160px; font-size: 3.5rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; font-family: inherit; }
         #go-btn { font-size: 2.2rem; padding: 12px 35px; background: #ffb6c1; color: white; border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
 
-        #win-layer { display: none; position: absolute; inset: 0; background: white; flex-direction: column; align-items: center; justify-content: center; border-radius: 40px; z-index: 5000; }
-        marquee
+        /* 勝利畫面調整：確保不擋住圖片 */
+        #win-layer { 
+            display: none; position: absolute; inset: 0; background: white; 
+            flex-direction: column; align-items: center; justify-content: flex-start; 
+            border-radius: 40px; z-index: 5000
