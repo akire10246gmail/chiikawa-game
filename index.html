@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>花椰菜燉燉雞爭奪戰</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
     <style>
+        /* 已更正：套用粉圓字型系列 */
         body { 
-            /* 套用 Google Fonts 下載的圓體 */
-            font-family: 'Kosugi Maru', "Microsoft JhengHei", "微軟正黑體", sans-serif; 
-            background-color: #fff0f5; margin: 0; display: flex; 
-            justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; 
+            font-family: 'jf-openhuninn', '粉圓', 'jf open huninn', "Microsoft JhengHei", "微軟正黑體", sans-serif; 
+            background-color: #fff0f5; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden; 
         }
         
         #start-overlay { 
@@ -86,6 +91,7 @@
     window.onload = function() {
         var timestamp = new Date().getTime();
         startImg.src = "poster.png?v=" + timestamp;
+        
         setTimeout(function(){
             if(startImg.naturalWidth === 0) {
                 startImg.src = 'https://i.imgur.com/8QO9M9F.png';
