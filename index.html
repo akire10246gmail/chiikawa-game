@@ -17,13 +17,14 @@
             display: none; 
             position: fixed;
             bottom: 0;
-            width: 150px;             /* 1. 加寬容器，防止字體變大時折行 */
+            width: 120px;             /* 增加寬度以容納大字體 */
             height: 100vh;
             background: rgba(255, 240, 245, 0.7);
             z-index: 10000;
             writing-mode: vertical-rl; 
             text-orientation: mixed;
-            text-align: center;       /* 確保置中 */
+            text-align: center;
+            white-space: nowrap;      /* 核心修正：強制不換行 */
         }
         
         #marquee-left { left: 250px; border-right: 5px solid #ffb6c1; }
@@ -32,7 +33,7 @@
         .side-marquee marquee {
             height: 100%; 
             width: 100%;
-            font-size: 3.5rem;       /* 2. 在這裡改跑馬燈字的大小（原本是 2.5） */
+            font-size: 3.5rem;       /* 你可以在這裡自由調大字體 */
             color: #ff1493; 
             font-weight: bold;
         }
@@ -83,7 +84,6 @@
         
         #msg { font-size: 2.5rem; color: #ff69b4; font-weight: bold; margin: 0; }
 
-        /* 範圍數字大小也可以在這邊調 */
         .range-text { font-size: 8rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
         input { width: 180px; font-size: 4rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; font-family: inherit; }
         #go-btn { font-size: 2.2rem; padding: 12px 35px; background: #ffb6c1; color: white; border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
@@ -107,95 +107,3 @@
 </div>
 
 <div id="marquee-right" class="side-marquee">
-    <marquee direction="up" scrollamount="10">答對了！恭喜獲得花椰菜燉燉雞🎉🎉</marquee>
-</div>
-
-<div id="start-overlay">
-    <div id="start-title">花椰菜燉燉雞爭奪戰</div>
-    <div class="poster-box">
-        <img id="start-img" src="poster.png">
-    </div>
-    <button id="start-btn" onclick="startGame()">開始遊戲</button>
-</div>
-
-<div class="container">
-    <div class="pic-area" id="pic-box">
-        <img id="char-img" src="https://i.giphy.com/media/kKtAJrJUQnuikFZr3c/giphy.gif">
-    </div>
-    <div class="info-area">
-        <div class="msg-container">
-            <div class="avatar-box" id="avatar-box">
-                <img id="face-img" src="">
-            </div>
-            <p id="msg">數字範圍：</p>
-        </div>
-        
-        <div class="range-text"><span id="low">1</span>~<span id="high">328</span></div>
-        <input type="number" id="num-in" placeholder="??" inputmode="numeric">
-        <button id="go-btn" onclick="check()">猜！</button>
-    </div>
-    <div id="win-layer">
-        <img id="win-img" src="win_image.png">
-        <button class="re-btn" onclick="location.reload()">再玩一次</button>
-    </div>
-</div>
-
-<audio id="bgm" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
-<audio id="sound-win"><source src="win.mp3" type="audio/mpeg"></audio>
-
-<script>
-    var ans = Math.floor(Math.random() * 326) + 2; // 讓它每次重新整理都是隨機答案
-    var L = 1, R = 328;
-    var gifIndex = 0;
-    var bgm = document.getElementById('bgm'), winSound = document.getElementById('sound-win');
-    var numIn = document.getElementById('num-in'), startImg = document.getElementById('start-img');
-
-    window.onload = function() {
-        var timestamp = new Date().getTime();
-        startImg.src = "poster.png?v=" + timestamp;
-        startImg.onerror = function() { this.style.display = 'none'; };
-    };
-
-    function startGame() {
-        document.getElementById('start-overlay').style.display = 'none';
-        if (bgm) { bgm.play().catch(e => {}); }
-        setTimeout(function() { numIn.focus(); }, 100);
-    }
-
-    function check() {
-        var val = parseInt(numIn.value);
-        if (isNaN(val) || val <= L || val >= R) return;
-        
-        document.getElementById('pic-box').className = "pic-area shake";
-        
-        setTimeout(function() {
-            document.getElementById('pic-box').className = "pic-area";
-            if (val === ans) {
-                if (bgm) bgm.pause();
-                document.getElementById('win-layer').style.display = 'flex';
-                document.getElementById('marquee-left').style.display = 'block';
-                document.getElementById('marquee-right').style.display = 'block';
-                if (winSound) winSound.play().catch(e => {});
-            } else {
-                if (val < ans) L = val; else R = val;
-                document.getElementById('low').innerText = L;
-                document.getElementById('high').innerText = R;
-                document.getElementById('msg').innerText = val < ans ? "太小了！" : "太大了！";
-                
-                var faceNum = Math.floor(Math.random() * 9) + 1;
-                document.getElementById('face-img').src = "face" + faceNum + ".png";
-                document.getElementById('avatar-box').style.display = "block";
-                
-                var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S", "Fr2UB3zizQSNWzCy52", "nM9Fzo0gFnCyQKv28u", "UxES0P0wADBV5Msx0X", "TGMxaNizlhAO8ykcR6", "tKjowwH3any3aJ4Z79", "uDIfs260heCkUagE76"];
-                document.getElementById('char-img').src = "https://i.giphy.com/media/" + gifs[gifIndex] + "/giphy.gif";
-                gifIndex = (gifIndex + 1) % gifs.length;
-                
-                numIn.value = "";
-                numIn.focus();
-            }
-        }, 500);
-    }
-    numIn.onkeyup = function(e) { if (e.keyCode === 13) check(); };
-</script>
-</body>
-</html>
