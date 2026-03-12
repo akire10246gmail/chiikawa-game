@@ -12,26 +12,31 @@
             justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; 
         }
         
-        /* 兩側垂直跑馬燈 - 已調整位置 */
+        /* --- 跑馬燈修正區 --- */
         .side-marquee {
             display: none; 
             position: fixed;
             bottom: 0;
-            width: 50px; 
-            height: 70vh;
+            width: 150px;             /* 1. 加寬容器，防止字體變大時折行 */
+            height: 100vh;
             background: rgba(255, 240, 245, 0.7);
             z-index: 10000;
             writing-mode: vertical-rl; 
             text-orientation: mixed;
+            text-align: center;       /* 確保置中 */
         }
-        /* 這裡調整 50px 可以讓它往中間移 */
-        #marquee-left { left: 200px; border-right: 5px solid #ffb6c1; }
-        #marquee-right { right: 200px; border-left: 5px solid #ffb6c1; }
+        
+        #marquee-left { left: 250px; border-right: 5px solid #ffb6c1; }
+        #marquee-right { right: 250px; border-left: 5px solid #ffb6c1; }
 
         .side-marquee marquee {
-            height: 100%; width: 100%;
-            font-size: 2.5rem; color: #ff1493; font-weight: bold;
+            height: 100%; 
+            width: 100%;
+            font-size: 3.5rem;       /* 2. 在這裡改跑馬燈字的大小（原本是 2.5） */
+            color: #ff1493; 
+            font-weight: bold;
         }
+        /* ------------------ */
 
         #start-overlay { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
@@ -78,8 +83,9 @@
         
         #msg { font-size: 2.5rem; color: #ff69b4; font-weight: bold; margin: 0; }
 
-        .range-text { font-size: 9rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
-        input { width: 160px; font-size: 3.5rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; font-family: inherit; }
+        /* 範圍數字大小也可以在這邊調 */
+        .range-text { font-size: 8rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
+        input { width: 180px; font-size: 4rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; font-family: inherit; }
         #go-btn { font-size: 2.2rem; padding: 12px 35px; background: #ffb6c1; color: white; border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
 
         #win-layer { 
@@ -138,31 +144,22 @@
 <audio id="sound-win"><source src="win.mp3" type="audio/mpeg"></audio>
 
 <script>
-    var ans = 100, L = 1, R = 328;
-    var gifIndex = 0; // 用來記錄 GIF 順序
+    var ans = Math.floor(Math.random() * 326) + 2; // 讓它每次重新整理都是隨機答案
+    var L = 1, R = 328;
+    var gifIndex = 0;
     var bgm = document.getElementById('bgm'), winSound = document.getElementById('sound-win');
     var numIn = document.getElementById('num-in'), startImg = document.getElementById('start-img');
 
     window.onload = function() {
         var timestamp = new Date().getTime();
         startImg.src = "poster.png?v=" + timestamp;
-        
-        startImg.onerror = function() {
-            console.error("無法載入 poster.png");
-            this.style.display = 'none';
-        };
+        startImg.onerror = function() { this.style.display = 'none'; };
     };
 
     function startGame() {
         document.getElementById('start-overlay').style.display = 'none';
-        if (bgm) {
-            bgm.play().catch(function(e) {
-                console.log("音效自動播放受限");
-            });
-        }
-        setTimeout(function() {
-            numIn.focus();
-        }, 100);
+        if (bgm) { bgm.play().catch(e => {}); }
+        setTimeout(function() { numIn.focus(); }, 100);
     }
 
     function check() {
@@ -189,12 +186,8 @@
                 document.getElementById('face-img').src = "face" + faceNum + ".png";
                 document.getElementById('avatar-box').style.display = "block";
                 
-                // 依序播放 GIF 列表
                 var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S", "Fr2UB3zizQSNWzCy52", "nM9Fzo0gFnCyQKv28u", "UxES0P0wADBV5Msx0X", "TGMxaNizlhAO8ykcR6", "tKjowwH3any3aJ4Z79", "uDIfs260heCkUagE76"];
-                
                 document.getElementById('char-img').src = "https://i.giphy.com/media/" + gifs[gifIndex] + "/giphy.gif";
-                
-                // 增加索引，循環播放
                 gifIndex = (gifIndex + 1) % gifs.length;
                 
                 numIn.value = "";
@@ -206,4 +199,3 @@
 </script>
 </body>
 </html>
-
