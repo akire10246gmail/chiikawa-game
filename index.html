@@ -189,7 +189,7 @@
                 document.getElementById('face-img').src = "face" + faceNum + ".png";
                 document.getElementById('avatar-box').style.display = "block";
                 
-                var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S"];
+                var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S", "Fr2UB3zizQSNWzCy52", "nM9Fzo0gFnCyQKv28u", "UxES0P0wADBV5Msx0X", "TGMxaNizlhAO8ykcR6", "tKjowwH3any3aJ4Z79", "uDIfs260heCkUagE76"];
                 document.getElementById('char-img').src = "https://i.giphy.com/media/" + gifs[Math.floor(Math.random()*gifs.length)] + "/giphy.gif";
                 numIn.value = "";
                 numIn.focus();
@@ -199,4 +199,5 @@
     numIn.onkeyup = function(e) { if (e.keyCode === 13) check(); };
 </script>
 </body>
+
 </html>
