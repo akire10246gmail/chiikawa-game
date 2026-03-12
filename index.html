@@ -12,19 +12,22 @@
             justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; 
         }
         
+        /* 兩側垂直跑馬燈 - 已調整位置 */
         .side-marquee {
             display: none; 
             position: fixed;
             bottom: 0;
-            width: 80px; 
-            height: 100vh;
+            width: 70px; 
+            height: 70vh;
             background: rgba(255, 240, 245, 0.7);
             z-index: 10000;
             writing-mode: vertical-rl; 
             text-orientation: mixed;
         }
-        #marquee-left { left: 0; border-right: 5px solid #ffb6c1; }
-        #marquee-right { right: 0; border-left: 5px solid #ffb6c1; }
+        /* 這裡調整 50px 可以讓它往中間移 */
+        #marquee-left { left: 100px; border-right: 5px solid #ffb6c1; }
+        #marquee-right { right: 100px; border-left: 5px solid #ffb6c1; }
+
         .side-marquee marquee {
             height: 100%; width: 100%;
             font-size: 2.5rem; color: #ff1493; font-weight: bold;
@@ -75,7 +78,7 @@
         
         #msg { font-size: 2.5rem; color: #ff69b4; font-weight: bold; margin: 0; }
 
-        .range-text { font-size: 7rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
+        .range-text { font-size: 9rem; font-weight: 900; color: #ff69b4; margin: 15px 0; }
         input { width: 160px; font-size: 3.5rem; text-align: center; border: 5px solid #ffb6c1; border-radius: 20px; outline: none; font-family: inherit; }
         #go-btn { font-size: 2.2rem; padding: 12px 35px; background: #ffb6c1; color: white; border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
 
@@ -136,6 +139,7 @@
 
 <script>
     var ans = 100, L = 1, R = 328;
+    var gifIndex = 0; // 用來記錄 GIF 順序
     var bgm = document.getElementById('bgm'), winSound = document.getElementById('sound-win');
     var numIn = document.getElementById('num-in'), startImg = document.getElementById('start-img');
 
@@ -150,16 +154,12 @@
     };
 
     function startGame() {
-        // 先移除封面
         document.getElementById('start-overlay').style.display = 'none';
-        
-        // 嘗試播放音樂，若失敗也不會卡住遊戲
         if (bgm) {
             bgm.play().catch(function(e) {
                 console.log("音效自動播放受限");
             });
         }
-        
         setTimeout(function() {
             numIn.focus();
         }, 100);
@@ -189,8 +189,14 @@
                 document.getElementById('face-img').src = "face" + faceNum + ".png";
                 document.getElementById('avatar-box').style.display = "block";
                 
+                // 依序播放 GIF 列表
                 var gifs = ["f6v1HAqfj2svgGAqh9", "eKu950i97lkBafzJ0t", "fSEoD7tXf6esHkpwpN", "SH2GeSdLkdyxix7B7S", "Fr2UB3zizQSNWzCy52", "nM9Fzo0gFnCyQKv28u", "UxES0P0wADBV5Msx0X", "TGMxaNizlhAO8ykcR6", "tKjowwH3any3aJ4Z79", "uDIfs260heCkUagE76"];
-                document.getElementById('char-img').src = "https://i.giphy.com/media/" + gifs[Math.floor(Math.random()*gifs.length)] + "/giphy.gif";
+                
+                document.getElementById('char-img').src = "https://i.giphy.com/media/" + gifs[gifIndex] + "/giphy.gif";
+                
+                // 增加索引，循環播放
+                gifIndex = (gifIndex + 1) % gifs.length;
+                
                 numIn.value = "";
                 numIn.focus();
             }
@@ -199,5 +205,4 @@
     numIn.onkeyup = function(e) { if (e.keyCode === 13) check(); };
 </script>
 </body>
-
 </html>
