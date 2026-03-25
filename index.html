@@ -12,32 +12,44 @@
             justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; 
         }
         
-        /* --- 跑馬燈終極修正區 --- */
+        /* --- 現代 CSS 動畫跑馬燈（絕不折行、不卡住） --- */
         .side-marquee {
             display: none; 
             position: fixed;
             bottom: 0;
-            width: 100px;             /* 稍微加大寬度確保安全範圍 */
+            width: 100px;             /* 軌道寬度 */
             height: 100vh;
             background: rgba(255, 240, 245, 0.7);
             z-index: 10000;
-            writing-mode: vertical-rl; 
-            text-orientation: mixed;
-            text-align: center;
+            overflow: hidden;         /* 切掉超出螢幕範圍的字 */
         }
         
         #marquee-left { left: 260px; border-right: 5px solid #ffb6c1; }
         #marquee-right { right: 260px; border-left: 5px solid #ffb6c1; }
 
-        .side-marquee marquee {
-            height: 100%; 
-            width: 100%;
-            font-size: 5rem;       
+        .marquee-content {
+            display: block;
+            position: absolute;
+            width: 100px;
+            font-size: 5rem;         /* 巨大字體 */
             color: #ff1493; 
             font-weight: bold;
-            /* 核心修正：強制文字不換行 */
-            white-space: nowrap; 
-            display: inline-block;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            white-space: nowrap;     /* 強制不換行 */
+            
+            /* 綁定向上滾動動畫：12秒跑一圈，無限循環 */
+            animation: scrollUp 12s linear infinite; 
+        }
+
+        /* 垂直向上滾動的動畫邏輯 */
+        @keyframes scrollUp {
+            0% {
+                transform: translateY(100vh); /* 從螢幕最底部開始 */
+            }
+            100% {
+                transform: translateY(-100%); /* 往上滾動到自己高度的外面 */
+            }
         }
         /* ------------------ */
 
@@ -105,11 +117,11 @@
 <body>
 
 <div id="marquee-left" class="side-marquee">
-    <marquee direction="up" scrollamount="10">答對了！恭喜獲得花椰菜燉燉雞🎉🎉</marquee>
+    <div class="marquee-content">答對了！恭喜獲得花椰菜燉燉雞🎉🎉</div>
 </div>
 
 <div id="marquee-right" class="side-marquee">
-    <marquee direction="up" scrollamount="10">答對了！恭喜獲得花椰菜燉燉雞🎉🎉</marquee>
+    <div class="marquee-content">答對了！恭喜獲得花椰菜燉燉雞🎉🎉</div>
 </div>
 
 <div id="start-overlay">
@@ -146,7 +158,7 @@
 <audio id="sound-win"><source src="win.mp3" type="audio/mpeg"></audio>
 
 <script>
-    // 改答案在這
+    // 固定答案 229
     var ans = 229; 
     var L = 1, R = 328;
     var gifIndex = 0;
@@ -202,5 +214,3 @@
 </script>
 </body>
 </html>
-
-
